@@ -5,6 +5,20 @@
   let lenis = null;
   let unbindNav = null;
 
+  function measureNav() {
+    if (!nav) return;
+    [[".brand-meta", "--meta"], [".nav-next", "--next"], [".nav-links", "--links"]].forEach(function (pair) {
+      const node = nav.querySelector(pair[0]);
+      if (!node) return;
+      const previous = node.style.maxWidth;
+      node.style.transition = "none";
+      node.style.maxWidth = "none";
+      nav.style.setProperty(pair[1], node.scrollWidth + "px");
+      node.style.maxWidth = previous;
+      node.style.transition = "";
+    });
+  }
+
   function tune(getY, subscribe) {
     if (!nav) return function () {};
     let last = getY();
@@ -78,5 +92,8 @@
   });
 
   phone.addEventListener("change", sync);
+  measureNav();
+  window.addEventListener("resize", measureNav);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureNav);
   sync();
 })();

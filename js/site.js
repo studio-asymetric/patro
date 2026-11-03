@@ -509,6 +509,21 @@ function formatRepublic(event, withYear) {
   return (withYear ? day + " " + event.calendarYear : day) + " · " + event.name;
 }
 
+function measureNav() {
+  const nav = document.querySelector(".nav");
+  if (!nav) return;
+  [[".brand-meta", "--meta"], [".nav-next", "--next"], [".nav-links", "--links"]].forEach(([sel, key]) => {
+    const node = nav.querySelector(sel);
+    if (!node) return;
+    const previous = node.style.maxWidth;
+    node.style.transition = "none";
+    node.style.maxWidth = "none";
+    nav.style.setProperty(key, node.scrollWidth + "px");
+    node.style.maxWidth = previous;
+    node.style.transition = "";
+  });
+}
+
 function paintRepublic() {
   const events = republicYear(new Date());
   const next = events.find((event) => event.status === "next" || event.status === "today");
@@ -520,7 +535,8 @@ function paintRepublic() {
     const word = next.status === "today" ? "Today" : "Next event";
     const label = formatRepublic(next, false);
     node.hidden = false;
-    node.textContent = word + " · " + next.date.getDate() + " " + MONTHS[next.date.getMonth()].slice(0, 3);
+    const labelNode = node.querySelector("span") || node;
+    labelNode.textContent = word + " · " + next.date.getDate() + " " + MONTHS[next.date.getMonth()].slice(0, 3);
     node.title = label;
     node.setAttribute("aria-label", word + ", " + label);
   });
@@ -558,6 +574,7 @@ function paintRepublic() {
       list.append(item);
     });
   });
+  measureNav();
 }
 
 document.getElementById("putOnPlate").addEventListener("click", () => {
@@ -788,6 +805,9 @@ new ResizeObserver(() => fit()).observe(stage);
 
 watchDrawing();
 paintRepublic();
+measureNav();
+window.addEventListener("resize", measureNav);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureNav);
 buildRail();
 startMotionOnce();
 buildGlyphs();
