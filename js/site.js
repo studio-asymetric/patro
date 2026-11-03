@@ -20,7 +20,14 @@ const PRESETS = [
   { ink: "rouge", text: "WILSONOVO\nNÁDRAŽÍ", place: "Prague station", name: "Wilsonovo nádraží" },
   { ink: "brick", text: "NÁRODNÍ\nTŘÍDA", place: "Prague avenue", name: "Národní třída" },
   { ink: "paper", text: "TURČ. SV. MARTIN", place: "Slovak town", name: "Turčiansky Svätý Martin" },
-  { ink: "cislo", text: "MASARYKOVO\nNÁBŘEŽÍ", place: "Prague embankment", name: "Masarykovo nábřeží" }
+  { ink: "cislo", text: "MASARYKOVO\nNÁBŘEŽÍ", place: "Prague embankment", name: "Masarykovo nábřeží" },
+  { ink: "noir", text: "PRAHA", place: "Capital", name: "Praha", city: true },
+  { ink: "rouge", text: "BRNO", place: "Moravia", name: "Brno", city: true },
+  { ink: "paper", text: "BRATISLAVA", place: "Slovakia", name: "Bratislava", city: true },
+  { ink: "cislo", text: "PLZEŇ", place: "Bohemia", name: "Plzeň", city: true },
+  { ink: "brick", text: "KOŠICE", place: "Eastern Slovakia", name: "Košice", city: true },
+  { ink: "noir", text: "PRAŽSKÝ\nHRAD", place: "The castle", name: "Pražský hrad", city: true },
+  { ink: "paper", text: "UŽHOROD", place: "Ruthenia", name: "Užhorod", city: true }
 ];
 
 const REPUBLIC = [
@@ -343,6 +350,14 @@ function plainPaste(event) {
   document.execCommand("insertText", false, text.slice(0, 160));
 }
 
+function openCity() {
+  if (new URLSearchParams(location.search).get("t")) return;
+  const cities = PRESETS.filter((preset) => preset.city);
+  const preset = cities[Math.floor(Math.random() * cities.length)];
+  writeSign(preset.text);
+  setInk(preset.ink);
+}
+
 function readQuery() {
   const params = new URLSearchParams(location.search);
   const text = params.get("t");
@@ -372,10 +387,76 @@ editor.addEventListener("keydown", (event) => {
   }
 });
 
+const handheld = window.matchMedia("(pointer: coarse), (max-width: 1024px)");
+const typeSign = document.getElementById("typeSign");
+let plateOpen = true;
+
+function closePlate() {
+  plateOpen = false;
+  editor.setAttribute("contenteditable", "false");
+  editor.setAttribute("inputmode", "none");
+  editor.setAttribute("aria-readonly", "true");
+  editor.setAttribute("tabindex", "-1");
+  typeSign.hidden = false;
+  typeSign.setAttribute("aria-pressed", "false");
+  document.documentElement.classList.add("plate-locked");
+}
+
+function openPlate() {
+  plateOpen = true;
+  editor.setAttribute("contenteditable", "true");
+  editor.removeAttribute("inputmode");
+  editor.setAttribute("aria-readonly", "false");
+  editor.removeAttribute("tabindex");
+  typeSign.hidden = false;
+  typeSign.setAttribute("aria-pressed", "true");
+  document.documentElement.classList.remove("plate-locked");
+  editor.focus();
+}
+
+function desktopPlate() {
+  plateOpen = true;
+  editor.setAttribute("contenteditable", "true");
+  editor.removeAttribute("inputmode");
+  editor.removeAttribute("aria-readonly");
+  editor.removeAttribute("tabindex");
+  typeSign.hidden = true;
+  typeSign.setAttribute("aria-pressed", "false");
+  document.documentElement.classList.remove("plate-locked");
+}
+
+function syncPlate() {
+  if (handheld.matches) closePlate();
+  else desktopPlate();
+}
+
+typeSign.addEventListener("click", () => {
+  if (typeSign.getAttribute("aria-pressed") === "true") {
+    closePlate();
+    editor.blur();
+  } else {
+    openPlate();
+  }
+});
+
+editor.addEventListener("blur", (event) => {
+  if (!handheld.matches) return;
+  if (event.relatedTarget === typeSign) return;
+  closePlate();
+});
+
+editor.addEventListener("pointerdown", (event) => {
+  if (handheld.matches && !plateOpen) event.preventDefault();
+});
+
 stage.addEventListener("pointerdown", (event) => {
   if (event.target.closest(".dock") || event.target.closest("button") || event.target.closest("a")) return;
+  if (handheld.matches && !plateOpen) return;
   editor.focus();
 });
+
+handheld.addEventListener("change", syncPlate);
+syncPlate();
 
 document.querySelectorAll(".ink").forEach((button) => {
   button.addEventListener("click", () => setInk(button.dataset.ink));
@@ -525,11 +606,41 @@ function watchDrawing() {
   reduce.addEventListener("change", place);
 }
 
+function watchSections(getY) {
+  const items = [...document.querySelectorAll(".nav-links a, .nav-download")].map((link) => {
+    const section = document.getElementById(link.getAttribute("href").slice(1));
+    return section ? { link, section } : null;
+  }).filter(Boolean);
+  const line = 88;
+
+  function mark() {
+    if (!items.length) return;
+    let current = items[0];
+    items.forEach((item) => {
+      if (item.section.getBoundingClientRect().top <= line) current = item;
+    });
+    const limit = document.documentElement.scrollHeight - window.innerHeight - 4;
+    if (getY() >= limit) current = items[items.length - 1];
+    items.forEach((item) => {
+      const on = item === current;
+      item.link.classList.toggle("is-on", on);
+      if (on) item.link.setAttribute("aria-current", "location");
+      else item.link.removeAttribute("aria-current");
+    });
+  }
+
+  mark();
+  return mark;
+}
+
 function tuneNav(getY, subscribe) {
   const nav = document.querySelector(".nav");
+  const markSection = watchSections(getY);
+  window.addEventListener("resize", markSection);
   let last = getY();
   let intent = 0;
-  return subscribe(() => {
+  const stopScroll = subscribe(() => {
+    markSection();
     const y = getY();
     const delta = y - last;
     last = y;
@@ -544,6 +655,10 @@ function tuneNav(getY, subscribe) {
     if (intent > 36) nav.classList.add("is-min");
     else if (intent < -36) nav.classList.remove("is-min");
   });
+  return () => {
+    stopScroll();
+    window.removeEventListener("resize", markSection);
+  };
 }
 
 function watchReveals() {
@@ -582,9 +697,8 @@ function startMotion() {
       if (lenis) {
         lenis.destroy();
         lenis = null;
-        unbindNav = null;
       }
-      if (unbindNav) return;
+      unbind();
       unbindNav = tuneNav(() => window.scrollY, (fn) => {
         window.addEventListener("scroll", fn, { passive: true });
         return () => window.removeEventListener("scroll", fn);
@@ -621,7 +735,7 @@ function startMotion() {
       const target = document.getElementById(id);
       if (!target) return;
       event.preventDefault();
-      lenis.scrollTo(target, { offset: -62 });
+      lenis.scrollTo(target, { offset: -84 });
     });
 
     phone.addEventListener("change", sync);
@@ -677,6 +791,7 @@ paintRepublic();
 buildRail();
 startMotionOnce();
 buildGlyphs();
+openCity();
 readQuery();
 syncOutputs();
 flagMissing();

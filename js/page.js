@@ -74,7 +74,7 @@
     const target = document.getElementById(link.getAttribute("href").slice(1));
     if (!target) return;
     event.preventDefault();
-    lenis.scrollTo(target, { offset: -62 });
+    lenis.scrollTo(target, { offset: -84 });
   });
 
   phone.addEventListener("change", sync);
