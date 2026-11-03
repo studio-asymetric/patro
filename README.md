@@ -10,9 +10,9 @@ The specimen site lets you type a sign, switch enamel colours, and download the 
 
 | File | Use |
 | --- | --- |
-| [`download/Patro.zip`](download/Patro.zip) | TTF, WOFF2, license, install notes |
-| [`fonts/Patro.ttf`](fonts/Patro.ttf) | Install on a computer |
-| [`fonts/Patro.woff2`](fonts/Patro.woff2) | Use on a website |
+| [`download/Patro.zip`](download/Patro.zip) | TTF, WOFF2, license, readme |
+| [`download/Patro-TTF.zip`](download/Patro-TTF.zip) | Desktop font, license, readme |
+| [`download/Patro-WOFF2.zip`](download/Patro-WOFF2.zip) | Web font, license, readme |
 
 ```css
 @font-face {

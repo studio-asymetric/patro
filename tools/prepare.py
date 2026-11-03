@@ -74,10 +74,8 @@ def build_font() -> tuple[Path, Path]:
     return ttf_path, woff_path
 
 
-def build_zip(ttf: Path, woff: Path) -> None:
-    out_dir = ROOT / "download"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    readme = """Patro
+def readme_text() -> str:
+    return """Patro
 Enamel sign typeface
 
 Designed by Dalibor Itze, 2022.
@@ -89,6 +87,8 @@ Reserved Font Name: Patro.
 
 Version 1.001 (2026) — released under the Open Font License. Drawings unchanged from 1.000.
 Version 1.000 (2022) — first complete alphabet, reconstructed from Czechoslovak enamel signs.
+
+Every download includes this readme and OFL.txt with the font file.
 
 Install
 - Windows: right-click Patro.ttf and choose Install, or Install for all users.
@@ -103,13 +103,34 @@ Install
   font-display: swap;
 }
 """
-    zip_path = out_dir / "Patro.zip"
-    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
-        zf.write(ttf, "Patro/Patro.ttf")
-        zf.write(woff, "Patro/Patro.woff2")
+
+
+def write_pack(path: Path, files: list[tuple[Path | None, str, str | None]]) -> None:
+    readme = readme_text().replace("\n", "\r\n")
+    with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for source, arcname, payload in files:
+            if payload is not None:
+                zf.writestr(arcname, payload)
+            else:
+                zf.write(source, arcname)
         zf.write(ROOT / "fonts" / "OFL.txt", "Patro/OFL.txt")
-        zf.writestr("Patro/README.txt", readme.replace("\n", "\r\n"))
-    print("zip", zip_path.stat().st_size)
+        zf.writestr("Patro/README.txt", readme)
+    print("zip", path.name, path.stat().st_size)
+
+
+def build_zip(ttf: Path, woff: Path) -> None:
+    out_dir = ROOT / "download"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    write_pack(out_dir / "Patro.zip", [
+        (ttf, "Patro/Patro.ttf", None),
+        (woff, "Patro/Patro.woff2", None),
+    ])
+    write_pack(out_dir / "Patro-TTF.zip", [
+        (ttf, "Patro/Patro.ttf", None),
+    ])
+    write_pack(out_dir / "Patro-WOFF2.zip", [
+        (woff, "Patro/Patro.woff2", None),
+    ])
 
 
 def rel_luminance(hex_color: str) -> float:
