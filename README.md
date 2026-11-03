@@ -63,6 +63,14 @@ Add a specific A record so this name does not follow the old wildcard:
 
 The zone still has a legacy wildcard `* → 185.8.237.22`. A specific `patro` record overrides it. Without that record, the name keeps pointing at the old server.
 
+## Search
+
+The public pages are the specimen and the license. `robots.txt` points at the sitemap:
+
+https://patro.asymetric.studio/sitemap.xml
+
+In Google Search Console, add the property `patro.asymetric.studio` and submit that sitemap. The pages name the work **Patro typeface**.
+
 ## Credits
 
 Dalibor Itze, for professor Erik Faulhaber, Schrift und Typografie.

@@ -363,6 +363,20 @@ html.is-on .nav-download { animation: nav-drop 0.7s 0.32s cubic-bezier(0.22, 1, 
   pointer-events: none;
 }
 
+.plate-name {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  margin: 0;
+  z-index: 2;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--quiet);
+  pointer-events: none;
+}
+
 .hint {
   position: absolute;
   top: 16px;
@@ -1281,6 +1295,7 @@ input[type="range"]::-moz-range-thumb {
   .inks { border-right: 0; }
 
   .hint { left: 16px; }
+  .plate-name { right: 16px; top: 14px; }
 
   .sec-head,
   .studies,
