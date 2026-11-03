@@ -3,7 +3,6 @@
 .gitattributes
 .dockerignore
 Dockerfile
-nginx.conf
 README.md
 LICENSE
 tools
