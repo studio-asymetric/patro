@@ -1,0 +1,11 @@
+.git
+.gitignore
+.gitattributes
+.dockerignore
+Dockerfile
+nginx.conf
+README.md
+LICENSE
+tools
+desktop.ini
+Thumbs.db

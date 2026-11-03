@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patro — enamel sign typeface</title>
+  <meta name="author" content="Dalibor Itze">
+  <meta name="description" content="Patro is a free typeface reconstructed from Czechoslovak enamel signs of the late 1920s and 1930s. Type a sign, then download the font.">
+  <link rel="canonical" href="https://patro.asymetric.studio/">
+  <meta property="og:title" content="Patro — enamel sign typeface">
+  <meta property="og:description" content="A free reconstruction of Czechoslovak enamel signs. Type into the plate, then take the font home.">
+  <meta property="og:image" content="https://patro.asymetric.studio/og.jpg">
+  <meta property="og:url" content="https://patro.asymetric.studio/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#111111">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preload" href="/fonts/Patro.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <a class="skip" href="#editor">Skip to the sign</a>
+
+  <header class="nav">
+    <a class="brand" href="#specimen">
+      <span class="brand-name">patro</span>
+      <span class="brand-meta">enamel type</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#specimen">Specimen</a>
+      <a href="#signs">Signs</a>
+      <a href="#letters">Letters</a>
+      <a href="#about">About</a>
+    </nav>
+    <a class="nav-download" href="/download/Patro.zip" download="Patro.zip">Download</a>
+  </header>
+
+  <main>
+    <section class="stage" id="specimen" data-ink="noir">
+      <span class="screw s1" aria-hidden="true"></span>
+      <span class="screw s2" aria-hidden="true"></span>
+      <span class="screw s3" aria-hidden="true"></span>
+      <span class="screw s4" aria-hidden="true"></span>
+      <p class="hint" id="hint">Type into the plate</p>
+      <div
+        id="editor"
+        class="editor live-type"
+        contenteditable="true"
+        role="textbox"
+        aria-multiline="true"
+        aria-label="Sign text"
+        spellcheck="false"
+        autocorrect="off"
+        autocapitalize="off"
+      >SCHÖNAUER
+STRAßE</div>
+
+      <div class="dock" role="toolbar" aria-label="Sign controls">
+        <div class="inks" role="radiogroup" aria-label="Plate colour">
+          <button type="button" class="ink" role="radio" data-ink="noir" aria-checked="true" aria-label="Noir, cream on black"></button>
+          <button type="button" class="ink" role="radio" data-ink="rouge" aria-checked="false" aria-label="Rouge, red on plaster"></button>
+          <button type="button" class="ink" role="radio" data-ink="brick" aria-checked="false" aria-label="Brick, black on red"></button>
+          <button type="button" class="ink" role="radio" data-ink="cislo" aria-checked="false" aria-label="House number, blue on cream"></button>
+          <button type="button" class="ink" role="radio" data-ink="paper" aria-checked="false" aria-label="Paper, black on a workshop sheet"></button>
+        </div>
+        <label class="slider">
+          <span>Track <output id="trackOut">−0.02</output></span>
+          <input id="track" type="range" min="-8" max="16" step="1" value="-2" aria-label="Tracking">
+        </label>
+        <label class="slider">
+          <span>Size <output id="sizeOut">82</output></span>
+          <input id="size" type="range" min="48" max="100" step="1" value="82" aria-label="Size">
+        </label>
+        <label class="slider">
+          <span>Lead <output id="leadOut">0.90</output></span>
+          <input id="lead" type="range" min="78" max="120" step="1" value="90" aria-label="Leading">
+        </label>
+        <button type="button" class="dock-toggle" id="ss01" aria-pressed="false" title="Alternate drawings for N, Q, Ň and ampersand">Alt N Q &amp;</button>
+        <p class="missing" id="missing" hidden></p>
+      </div>
+    </section>
+
+    <section id="signs" class="block">
+      <div class="sec-head">
+        <p class="sec-kicker">02 — Signs</p>
+        <p class="sec-lead">Plates in the languages the streets actually used. Choose one and it loads into the specimen above.</p>
+      </div>
+      <div class="rail" id="rail" tabindex="0" aria-label="Sign showcases"></div>
+    </section>
+
+    <section class="studies" aria-label="Specimen studies">
+      <figure class="study">
+        <img src="/media/schonauer.jpg" width="1024" height="724" alt="Schönauer Straße set in Patro, cream letters on a black plate with a drawing grid.">
+        <figcaption>Specimen study, 2022. Schönauer Straße, cream on enamel black.</figcaption>
+      </figure>
+      <figure class="study">
+        <img src="/media/gelnica.jpg" width="1024" height="377" alt="Gelnica – Zastávka set in Patro, red letters on a plaster wall." loading="lazy">
+        <figcaption>Specimen study, 2022. Gelnica – Zastávka, red enamel on plaster.</figcaption>
+      </figure>
+    </section>
+
+    <section id="letters" class="block">
+      <div class="sec-head">
+        <p class="sec-kicker">03 — Letters</p>
+        <p class="sec-lead">158 glyphs. Click a character to copy it. The posters put a detail back on the plate.</p>
+      </div>
+
+      <div class="letters-top">
+        <div class="sheet">
+          <header class="sheet-head">
+            <span>Type specimen</span>
+            <span>SK · CS · DE · EN</span>
+          </header>
+          <p class="sheet-label">Sign alphabet</p>
+          <div class="glyphs" id="glyphsUpper"></div>
+          <p class="sheet-note">Lowercase is in the font and follows these same drawings, so patro and PATRO set the same way.</p>
+          <p class="sheet-label">Figures</p>
+          <div class="glyphs" id="glyphsFigures"></div>
+          <p class="sheet-label">Punctuation</p>
+          <div class="glyphs" id="glyphsPunct"></div>
+          <div id="glyphsMoreWrap" hidden>
+            <p class="sheet-label">More</p>
+            <div class="glyphs" id="glyphsMore"></div>
+          </div>
+          <noscript><p>The character map is drawn with JavaScript. The font files further down can be downloaded without it.</p></noscript>
+        </div>
+        <div class="posters">
+          <button type="button" class="poster live-type" data-text="ÂÔ" data-ink="noir">ÂÔ</button>
+          <button type="button" class="poster live-type poster-sz" data-text="ß" data-ink="noir">ß</button>
+        </div>
+      </div>
+
+      <div class="inspector" id="inspector" hidden>
+        <span class="inspector-char live-type" id="inspectorChar">A</span>
+        <div class="inspector-copy">
+          <p id="inspectorCode">U+0041</p>
+          <p id="inspectorStatus">Click copies the character.</p>
+          <button type="button" id="putOnPlate">Put on the plate</button>
+        </div>
+      </div>
+
+      <div class="waterfall" aria-label="Sizes">
+        <p class="live-type" style="font-size: clamp(64px, 9vw, 112px)">SCHÖNAUER STRAßE</p>
+        <p class="live-type" style="font-size: clamp(40px, 5vw, 64px)">SCHÖNAUER STRAßE</p>
+        <p class="live-type" style="font-size: 32px">SCHÖNAUER STRAßE</p>
+        <p class="live-type" style="font-size: 18px">SCHÖNAUER STRAßE</p>
+      </div>
+    </section>
+
+    <section id="about" class="block">
+      <div class="sec-head">
+        <p class="sec-kicker">04 — About</p>
+      </div>
+      <div class="about-grid">
+        <div class="essay">
+          <h1 class="about-display live-type">Drawn from five letters.</h1>
+          <p>Patro is a reconstruction of the enamel street and house signs of Czechoslovakia in the late 1920s and 1930s. It began as a short school exercise. A few signs turned up, painted in a script that does not match any digitised typeface, and the only letters that could be trusted were P, a, t, r and o. The rest of the alphabet was drawn in that same hand.</p>
+          <p>The upper arms are heavier than the lower ones. That inverted shading is taken from the signs, where the paint sat thicker along the top. The ink traps are opened into small droplets, a reminder that the letters were brushed onto metal.</p>
+          <p>One style. The signs were capitals. Lowercase is in the file and follows those same drawings, so a word sets the same in either case. Slovak, Czech, German, and English. A stylistic set draws an alternate N, Q, Ň and ampersand.</p>
+          <p>Designed by Dalibor Itze in 2022, for professor Erik Faulhaber, Schrift und Typografie. Released in 2026 by Studio Asymetric under the SIL Open Font License, so the font can be used, studied, modified, and embedded. The name Patro stays with this design.</p>
+        </div>
+        <dl class="specs">
+          <div><dt>Styles</dt><dd>1</dd></div>
+          <div><dt>Version</dt><dd>1.001</dd></div>
+          <div><dt>Drawn</dt><dd>2022</dd></div>
+          <div><dt>Open release</dt><dd>2026</dd></div>
+          <div><dt>Designer</dt><dd>Dalibor Itze</dd></div>
+          <div><dt>Published by</dt><dd>Studio Asymetric</dd></div>
+          <div><dt>Glyphs</dt><dd>158</dd></div>
+          <div><dt>Encoding</dt><dd>Basic Latin, Latin-1 Supplement, Latin Extended-A</dd></div>
+          <div><dt>Languages</dt><dd>Slovak, Czech, German, English</dd></div>
+          <div><dt>Figures</dt><dd>Proportional lining</dd></div>
+          <div><dt>Features</dt><dd>ss01 · salt · aalt</dd></div>
+          <div><dt>Webfont</dt><dd>10.9 KB, WOFF2</dd></div>
+          <div><dt>Desktop</dt><dd>36.8 KB, TTF</dd></div>
+          <div><dt>License</dt><dd><a href="/fonts/OFL.txt">SIL Open Font License 1.1</a></dd></div>
+          <div><dt>Reserved name</dt><dd>Patro</dd></div>
+        </dl>
+      </div>
+
+      <div class="alts" aria-label="Stylistic set 1">
+        <figure>
+          <figcaption>Default</figcaption>
+          <p class="alt-sample">N Q Ň &amp;</p>
+        </figure>
+        <figure>
+          <figcaption>Stylistic set 1</figcaption>
+          <p class="alt-sample alt-ss01">N Q Ň &amp;</p>
+        </figure>
+      </div>
+    </section>
+
+    <section id="download" class="get" aria-labelledby="download-title">
+      <div class="get-plate">
+        <p class="get-kicker">05 — Download</p>
+        <h2 id="download-title" class="get-word live-type">PATRO</h2>
+        <p class="get-note">Free under the Open Font License. Install the TTF, or use the WOFF2 on a site.</p>
+      </div>
+      <div class="get-files">
+        <a class="file" href="/download/Patro.zip" download="Patro.zip">
+          <span class="file-name">Patro.zip</span>
+          <span class="file-meta">TTF, WOFF2, license · 28.1 KB</span>
+          <span class="file-go">Download</span>
+        </a>
+        <a class="file" href="/fonts/Patro.ttf" download="Patro.ttf">
+          <span class="file-name">Patro.ttf</span>
+          <span class="file-meta">Install on a computer · 36.8 KB</span>
+          <span class="file-go">Download</span>
+        </a>
+        <a class="file" href="/fonts/Patro.woff2" download="Patro.woff2">
+          <span class="file-name">Patro.woff2</span>
+          <span class="file-meta">For the web · 10.9 KB</span>
+          <span class="file-go">Download</span>
+        </a>
+        <a class="file" href="/fonts/OFL.txt">
+          <span class="file-name">OFL.txt</span>
+          <span class="file-meta">SIL Open Font License 1.1 · Reserved Font Name Patro</span>
+          <span class="file-go">Read</span>
+        </a>
+
+        <div class="snippet">
+          <div class="snippet-bar">
+            <span>Use it on a website</span>
+            <button type="button" id="copyCss">Copy CSS</button>
+          </div>
+          <pre id="cssSnippet">@font-face {
+  font-family: "Patro";
+  src: url("Patro.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <p>Dalibor Itze, 2022 · Studio Asymetric, 2026</p>
+    <p>Thank you, Mr. Faulhaber.</p>
+    <p>
+      <a href="https://asymetric.studio">asymetric.studio</a>
+      <span aria-hidden="true"> · </span>
+      <a href="https://github.com/studio-asymetric/patro">GitHub</a>
+      <span aria-hidden="true"> · </span>
+      <a href="/fonts/OFL.txt">OFL</a>
+    </p>
+    <p class="colophon-quiet">Interface set in Geist. The enamel letters are Patro.</p>
+  </footer>
+
+  <script src="/js/site.js"></script>
+</body>
+</html>
